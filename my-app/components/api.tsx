@@ -6,14 +6,14 @@ import useSWR from 'swr'; // 推薦使用 SWR 來處理資料快取和更新
 // 獲取環境變數中的 API Key
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 const API_URL = `https://data.moenv.gov.tw/api/v2/aqx_p_432?api_key=${API_KEY}`;
-console.log('載入的 API Key:', API_KEY);
+
 
 // 定義一個簡單的資料抓取函式
 const fetcher = (url) => fetch(url).then(res => res.json());
 
 // 根據 PM2.5 數值回傳對應的顏色和文字
 const getStatus = (pm25) => {
-  if (pm25 <= 15) return { color: 'bg-green-500', text: '良好' };
+  if (pm25 <= 15) return { color: 'bg-green-300', text: '良好' };
   if (pm25 <= 35) return { color: 'bg-yellow-500', text: '普通' };
   if (pm25 <= 54) return { color: 'bg-red-500', text: '不健康' };
   return { color: 'bg-purple-500', text: '非常不健康' };
