@@ -1,35 +1,57 @@
+# GitHub Actions 工作流程名稱
 name: Deploy to Cloudflare Pages
 
+# 設定觸發工作流程的事件
+# 當有程式碼推送到 'main' 分支時，觸發此工作流程
 on:
   push:
     branches:
       - main
 
+# 工作列表
 jobs:
+  # 部署工作
   deploy:
+    # 指定執行此工作的作業系統
     runs-on: ubuntu-latest
 
+    # 工作的步驟
     steps:
+      # 步驟 1: 檢查並下載儲存庫的程式碼
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 步驟 2: 設定 Node.js 環境
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
+      # 步驟 3: 安裝專案依賴
+      # working-directory 指定了 npm install 應在 my-app 子目錄中執行
       - name: Install dependencies
         run: npm install
         working-directory: ./my-app
 
+      # 步驟 4: 執行 Next.js 建置
+      # env: 區塊將 GitHub Secret 中的 API 金鑰傳遞給建置程序
+      # working-directory 指定了建置應在 my-app 子目錄中執行
       - name: Build with Next.js
         run: npm run build
         working-directory: ./my-app
+        env:
+          NEXT_PUBLIC_API_KEY: ${{ secrets.NEXT_PUBLIC_API_KEY }}
 
+      # 步驟 5: 部署到 Cloudflare Pages
+      # 使用 cloudflare/pages-action 來部署，並傳遞所有必要的參數
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
+          # 從 GitHub Secrets 獲取 Cloudflare 的 API 令牌
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          # 您的 Cloudflare Pages 專案名稱
           projectName: 'next-js-project'
+          # 指定要部署的資料夾，即 my-app 子目錄中的 out 資料夾
           directory: 'my-app/out'
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }} # ✅ 使用密鑰引用
+          # 從 GitHub Secrets 獲取您的 Cloudflare 帳號 ID
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
