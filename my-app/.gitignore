@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.env.local
+.env
+.env.*
+NEXT_PUBLIC_API_KEY=7c09e7e2-36d4-4350-af72-481ac9e941e1
