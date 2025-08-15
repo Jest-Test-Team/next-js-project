@@ -1,0 +1,50 @@
+name: Deploy to Cloudflare Pages
+
+# 觸發這個工作流程的時機
+# 當有程式碼被推送到 'main' 分支時，自動執行
+on:
+  push:
+    branches:
+      - main
+
+# 工作 (Jobs)
+# 一個工作流程可以包含多個工作，這裡只有一個 'deploy'
+jobs:
+  deploy:
+    # 執行這個工作的作業系統環境
+    runs-on: ubuntu-latest
+
+    # 工作的步驟 (Steps)
+    steps:
+      # 步驟 1: 檢查儲存庫的程式碼
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 步驟 2: 安裝 Node.js 環境
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # 步驟 3: 安裝專案的套件依賴
+      - name: Install dependencies
+        run: npm install
+
+      # 步驟 4: 執行 Next.js 的建置
+      # 這會產生一個 'out' 資料夾
+      - name: Build with Next.js
+        run: npm run build
+
+      # 步驟 5: 使用 Cloudflare Pages 專用的 Action 進行部署
+      # 這是 CI/CD 的核心步驟，它會將 'out' 資料夾的內容上傳到 Pages
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          # Cloudflare Pages 專案的 API 令牌
+          # 這是您在 GitHub Secrets 中設定的變數名稱
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          # Cloudflare 專案的名稱，請修改成您專案的實際名稱
+          projectName: 'next-js-project'
+          # 指出需要部署的資料夾，也就是 Next.js 建置的結果
+          directory: 'out'
+
