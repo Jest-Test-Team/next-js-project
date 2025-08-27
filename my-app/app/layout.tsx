@@ -1,9 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-// 修正: 移除 './globals.css' 的匯入，因為在獨立編譯的環境中無法正確解析
-// Next.js 專案會自動處理這個 CSS 檔案，但在這裡手動引入會造成錯誤
-// import './globals.css';
+import React from 'react'; // 導入 React，以便使用 React.ReactNode
 
 // 定義一個通用導覽列元件
 function Navbar() {
@@ -16,7 +14,9 @@ function Navbar() {
 
   const navLinks = [
     { name: '空氣品質', href: '/' },
-    { name: '酸雨成分分析', href: '/weather' },   
+    { name: '酸雨分析', href: '/weather' },
+    { name: '碳足跡', href: '/carbon-footprint' },
+    { name: '溫室氣體', href: '/greenhouse-gas' },
   ];
 
   return (
@@ -37,7 +37,8 @@ function Navbar() {
 }
 
 // Layout 元件，用於所有頁面
-export default function RootLayout({ children }) {
+// 修正: 為 children 參數添加明確的型別定義
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="zh-Hant">
       <head>
