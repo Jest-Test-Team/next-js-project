@@ -6,7 +6,15 @@ const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 // 修正: 使用新的酸雨分析 API 網址
 const API_URL = `https://data.moenv.gov.tw/api/v2/acidr_p_04?api_key=${API_KEY}`;
 
-// 修正：為 url 參數添加明確的型別註釋
+// 定義酸雨資料的介面
+interface AcidRainRecord {
+  sitename: string;
+  county: string;
+  mon_date: string;
+  RainFall: string;
+  ph: string;
+}
+
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 // 根據 pH 值判斷酸雨狀況
@@ -18,7 +26,7 @@ const getPHStatus = (ph: number) => {
 };
 
 export default function AcidRainDashboard() {
-  const { data, error, isLoading } = useSWR(API_URL, fetcher, { refreshInterval: 86400000 }); // 每天更新一次
+  const { data, error, isLoading } = useSWR<{ records: AcidRainRecord[] }>(API_URL, fetcher, { refreshInterval: 86400000 }); // 每天更新一次
 
   if (isLoading) {
     return (
@@ -60,7 +68,7 @@ export default function AcidRainDashboard() {
     <>
       <h1 className="text-2xl font-bold mb-6 text-center">台灣酸雨成份分析</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {records.map((record: any, index: number) => {
+        {records.map((record: AcidRainRecord, index: number) => {
           const phValue = parseFloat(record.ph);
           const phStatus = getPHStatus(phValue);
           return (
