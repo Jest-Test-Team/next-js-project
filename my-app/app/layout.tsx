@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import React from 'react'; // 導入 React，以便使用 React.ReactNode
+import React from 'react';
 
 // 定義一個通用導覽列元件
 function Navbar() {
@@ -44,17 +44,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <title>台灣監測儀表板</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        {/* 修正: 使用內嵌樣式來解決 ESLint 警告 */}
         <style>
           {`
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+            @tailwind base;
+            @tailwind components;
+            @tailwind utilities;
+            
             body {
               font-family: 'Inter', sans-serif;
             }
           `}
         </style>
+        {/* 修正: 移除 CDN script，改用 @import 內嵌到 style 中 */}
+        <script src="https://cdn.tailwindcss.com"></script>
       </head>
       <body className="bg-gray-50 text-gray-800">
         <div className="container mx-auto p-4">
