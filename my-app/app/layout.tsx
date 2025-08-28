@@ -15,7 +15,6 @@ function Navbar() {
   const navLinks = [
     { name: '空氣品質', href: '/' },
     { name: '酸雨分析', href: '/weather' },
-
   ];
 
   return (
@@ -45,7 +44,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-        {/* 修正: 移除 Tailwind CDN script，將其 @import 到 style 中 */}
         <style>
           {`
             @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
