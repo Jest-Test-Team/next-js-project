@@ -3,26 +3,30 @@
 import useSWR from 'swr';
 
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
-const API_URL = `https://data.moenv.gov.tw/api/v2/aqx_p_432?api_key=${API_KEY}`;
+// 修正: 使用新的酸雨分析 API 網址
+const API_URL = `https://data.moenv.gov.tw/api/v2/acidr_p_04?api_key=${API_KEY}`;
 
-// 定義空氣品質資料的介面
-interface AQXRecord {
+// 定義酸雨資料的介面
+interface AcidRainRecord {
   sitename: string;
   county: string;
-  'pm2.5_avg': string;
+  mon_date: string;
+  RainFall: string;
+  ph: string;
 }
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
-const getStatus = (pm25: number) => {
-  if (pm25 <= 15) return { color: 'bg-green-500', text: '良好' };
-  if (pm25 <= 35) return { color: 'bg-yellow-500', text: '普通' };
-  if (pm25 <= 54) return { color: 'bg-red-500', text: '不健康' };
-  return { color: 'bg-purple-500', text: '非常不健康' };
+// 根據 pH 值判斷酸雨狀況
+const getPHStatus = (ph: number) => {
+    if (ph < 5.0) return { color: 'bg-red-500', text: '偏酸性 (酸雨)' };
+    if (ph >= 5.0 && ph <= 5.5) return { color: 'bg-yellow-500', text: '弱酸性' };
+    if (ph > 5.5) return { color: 'bg-green-500', text: '正常' };
+    return { color: 'bg-gray-400', text: '資料缺失' };
 };
 
-export default function AirQualityDashboard() {
-  const { data, error, isLoading } = useSWR<{ records: AQXRecord[] }>(API_URL, fetcher, { refreshInterval: 60000 });
+export default function AcidRainDashboard() {
+  const { data, error, isLoading } = useSWR<{ records: AcidRainRecord[] }>(API_URL, fetcher, { refreshInterval: 86400000 }); // 每天更新一次
 
   if (isLoading) {
     return (
@@ -48,28 +52,33 @@ export default function AirQualityDashboard() {
           <div>
             <p className="font-bold">載入資料失敗</p>
             <p className="text-sm mt-1">請檢查您的網路連線或 API Key 是否正確。</p>
-            <p className="text-xs mt-2 text-red-500">錯誤訊息: {error.message}</p>
           </div>
         </div>
       </div>
     );
   }
 
-  if (!data || !data.records) return <div className="text-center p-8">沒有資料。</div>;
+  if (!data || !data.records || data.records.length === 0) {
+    return <div className="text-center p-8">沒有資料。</div>;
+  }
+
+  const records = data.records;
 
   return (
     <>
-      <h1 className="text-2xl font-bold mb-6 text-center">即時空氣品質監測儀表板</h1>
-      
+      <h1 className="text-2xl font-bold mb-6 text-center">台灣酸雨成份分析</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {data.records.map((station: AQXRecord) => {
-          const pm25Value = parseInt(station['pm2.5_avg']);
-          const status = getStatus(pm25Value);
+        {records.map((record: AcidRainRecord, index: number) => {
+          const phValue = parseFloat(record.ph);
+          const phStatus = getPHStatus(phValue);
           return (
-            <div key={station.sitename} className={`p-4 rounded-xl shadow-lg border border-gray-200 ${status.color} bg-opacity-20`}>
-              <h2 className="font-semibold text-lg">{station.sitename} ({station.county})</h2>
-              <p className="text-sm text-gray-600 mt-1">PM2.5: <span className="font-bold">{station['pm2.5_avg']}</span> µg/m³</p>
-              <p className="font-bold mt-2 text-white bg-opacity-80 rounded-full px-2 py-1 text-center" style={{ backgroundColor: status.color.replace('bg-', '') }}>{status.text}</p>
+            <div key={index} className={`p-4 rounded-xl shadow-lg border border-gray-200 ${phStatus.color} bg-opacity-20`}>
+              <h2 className="font-semibold text-lg">{record.sitename} ({record.county})</h2>
+              <p className="text-sm text-gray-600 mt-1">測站: <span className="font-bold">{record.sitename}</span></p>
+              <p className="text-sm text-gray-600 mt-1">日期: <span className="font-bold">{record.mon_date}</span></p>
+              <p className="text-sm text-gray-600 mt-1">降雨量: <span className="font-bold">{record.RainFall} mm</span></p>
+              <p className="text-sm text-gray-600 mt-1">pH 值: <span className="font-bold">{record.ph}</span></p>
+              <p className="font-bold mt-2 text-white bg-opacity-80 rounded-full px-2 py-1 text-center" style={{ backgroundColor: phStatus.color.replace('bg-', '') }}>{phStatus.text}</p>
             </div>
           );
         })}
