@@ -15,8 +15,7 @@ function Navbar() {
   const navLinks = [
     { name: '空氣品質', href: '/' },
     { name: '酸雨分析', href: '/weather' },
-    { name: '碳足跡', href: '/carbon-footprint' },
-    { name: '溫室氣體', href: '/greenhouse-gas' },
+
   ];
 
   return (
@@ -37,28 +36,26 @@ function Navbar() {
 }
 
 // Layout 元件，用於所有頁面
-// 修正: 為 children 參數添加明確的型別定義
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="zh-Hant">
       <head>
         <title>台灣監測儀表板</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        {/* 修正: 使用內嵌樣式來解決 ESLint 警告 */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        {/* 修正: 移除 Tailwind CDN script，將其 @import 到 style 中 */}
         <style>
           {`
             @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-            @tailwind base;
-            @tailwind components;
-            @tailwind utilities;
+            @import url('https://cdn.tailwindcss.com');
             
             body {
               font-family: 'Inter', sans-serif;
             }
           `}
         </style>
-        {/* 修正: 移除 CDN script，改用 @import 內嵌到 style 中 */}
-        <script src="https://cdn.tailwindcss.com"></script>
       </head>
       <body className="bg-gray-50 text-gray-800">
         <div className="container mx-auto p-4">
