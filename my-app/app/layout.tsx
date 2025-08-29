@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import './globals.css'; // 導入全域樣式
 
 // 定義導覽列連結的介面
 interface NavLink {
@@ -28,7 +27,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="zh-Hant">
       <head>
         {/*
-          使用 <link> 標籤載入 Google Fonts。
+          由於在獨立環境中無法直接使用 Tailwind CLI，
+          我們將 Tailwind CSS CDN 重新加回，確保樣式可以正常顯示。
+          雖然這可能會觸發 Next.js 的警告，但這是確保介面顯示的最快方式。
+        */}
+        <script src="https://cdn.tailwindcss.com"></script>
+        {/*
+          Google Fonts CDN
         */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
@@ -37,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body className="bg-gray-100 flex flex-col min-h-screen font-sans">
+      <body className="bg-gray-100 flex flex-col min-h-screen">
         {isClient && (
           <nav className="bg-white p-4 shadow-md sticky top-0 z-50">
             <div className="container mx-auto flex justify-center space-x-4">
