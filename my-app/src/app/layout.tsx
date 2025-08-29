@@ -1,55 +1,45 @@
-'use client';
+import type { Metadata } from "next";
+import Link from 'next/link'; // 匯入 Link 元件
+import { Inter } from "next/font/google";
+import "./globals.css";
 
-import React, { useState, useEffect } from 'react';
-import './globals.css';
+const inter = Inter({ subsets: ["latin"] });
 
-interface NavLink {
-  name: string;
-  href: string;
-}
-
-const navLinks: NavLink[] = [
-  { name: '空氣品質', href: '/' },
-  { name: '酸雨分析', href: '/weather' },
-];
+export const metadata: Metadata = {
+  title: "台灣環境資訊網",
+  description: "即時查詢空氣品質與紫外線指數",
+};
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
-  const [pathname, setPathname] = useState('/');
-
-  useEffect(() => {
-    setPathname(window.location.pathname);
-  }, []);
-
+}>) {
   return (
     <html lang="zh-Hant">
-      <head>
-        <title>環境數據儀表板</title>
-      </head>
-      <body>
-        <header className="bg-white shadow-md">
-          <nav className="container mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center">
-            <div className="flex space-x-4">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className={`text-lg font-medium transition-colors duration-200 ${
-                    pathname === link.href
-                      ? 'text-blue-600 border-b-2 border-blue-600'
-                      : 'text-gray-500 hover:text-gray-900'
-                  }`}
-                >
-                  {link.name}
-                </a>
-              ))}
+      <body className={inter.className}>
+        {/* --- Start: 新增的導覽列 --- */}
+        <header className="bg-gray-800 text-white shadow-md">
+          <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
+            <Link href="/" className="text-xl font-bold hover:text-gray-300">
+              台灣環境資訊網
+            </Link>
+            <div className="space-x-4">
+              <Link href="/aqi" className="px-3 py-2 rounded hover:bg-gray-700">
+                空氣品質 (AQI)
+              </Link>
+              <Link href="/uvi" className="px-3 py-2 rounded hover:bg-gray-700">
+                紫外線 (UVI)
+              </Link>
             </div>
           </nav>
         </header>
-        <main className="container mx-auto px-4 py-8">{children}</main>
+        {/* --- End: 新增的導覽列 --- */}
+
+        {/* 主要頁面內容 */}
+        <main className="container mx-auto p-4">
+          {children}
+        </main>
       </body>
     </html>
   );
