@@ -27,12 +27,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="zh-Hant">
       <head>
         {/*
-          使用 Tailwind CSS CDN，雖然 Next.js 會警告，
-          但在這個獨立環境中是確保樣式正確顯示的最可靠方法。
+          由於在獨立環境中無法直接使用 Tailwind CLI，
+          我們將 Tailwind CSS CDN 重新加回，確保樣式可以正常顯示。
+          雖然這可能會觸發 Next.js 的警告，但這是確保介面顯示的最快方式。
         */}
         <script src="https://cdn.tailwindcss.com"></script>
         {/*
-          Google Fonts CDN，確保字體能夠正確載入。
+          Google Fonts CDN
         */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
@@ -40,13 +41,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
-        <style>
-          {`
-            body {
-              font-family: 'Inter', sans-serif;
-            }
-          `}
-        </style>
       </head>
       <body className="bg-gray-100 flex flex-col min-h-screen">
         {isClient && (
