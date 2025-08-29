@@ -43,12 +43,12 @@ export default function WeatherPage() {
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6 text-center">台灣酸雨成份分析</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {data.records.map((record: AcidRainRecord) => {
+        {data.records.map((record: AcidRainRecord, index: number) => {
           const phValue = parseFloat(record.pH);
           const phStatus = getPHStatus(phValue);
           return (
             <div
-              key={record.SiteName}
+              key={`${record.SiteName}-${index}`} // ✅ 使用 SiteName 結合索引來建立唯一 key
               className={`p-4 rounded-xl shadow-lg border border-gray-200 ${phStatus.color} bg-opacity-20`}
             >
               <h2 className="font-semibold text-lg">{record.SiteName} ({record.County})</h2>
