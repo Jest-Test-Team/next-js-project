@@ -39,12 +39,9 @@ jobs:
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
-          # 使用您在 GitHub Secrets 中設定的 Token 和 Account ID
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          # 替換成您在 Cloudflare 上建立的專案名稱
-          projectName: 'your-cloudflare-project-name' 
-          # 部署的目錄。因為建置在 my-app 內，所以指向 my-app
-          directory: ./my-app 
-          # 告訴 Cloudflare Action 這是 GitHub Actions 的部署
+          # ⬇️ Make sure this value is 100% correct ⬇️
+          projectName: 'your-correct-project-name' 
+          directory: ./my-app
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
