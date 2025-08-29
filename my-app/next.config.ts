@@ -1,8 +1,7 @@
-import type { Config } from "next";
+import type { NextConfig } from 'next';
 
-const config: Config = {
-  // ... 其他設定
-  // output: 'export', // <--- 請刪除或註解掉這一行！
+const config: NextConfig = {
+  // 移除 output: 'export'，因為 Cloudflare Pages 不需要它
 };
 
 export default config;

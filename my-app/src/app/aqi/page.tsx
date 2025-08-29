@@ -1,7 +1,7 @@
 'use client';
 
 import useSWR from 'swr';
-import { FaWind, FaMapMarkerAlt, FaClock } from 'react-icons/fa'; // 導入圖示
+import { FaMapMarkerAlt, FaClock } from 'react-icons/fa';
 import { MdOutlineAir } from 'react-icons/md'; // 導入圖示
 
 const API_KEY = process.env.NEXT_PUBLIC_MOENV_API_KEY;
