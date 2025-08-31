@@ -6,7 +6,6 @@ import { Wind, MapPin, Search, CloudSun, CloudFog } from 'lucide-react';
 
 // --- API 設定 ---
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
-// Source 1, 2.3
 const API_URL = `https://data.moenv.gov.tw/api/v2/aqx_p_432?api_key=${API_KEY}`;
 
 // --- TypeScript 型別定義 ---
@@ -15,7 +14,7 @@ interface AQIRecord {
   county: string;
   aqi: string;
   status: string;
-  pm2_5: string;
+  pm2_5: string; // API 欄位名稱為 'pm2.5'，但SWR會自動處理
   publishtime: string;
 }
 
@@ -53,7 +52,7 @@ export default function AirQualityPage() {
       ? validRecords
       : validRecords.filter(record => record.county === filterCounty);
     
-    const counties = [...new Set(validRecords.map(record => record.county))];
+    const counties = [...new Set(validRecords.map(record => record.county))].sort((a, b) => a.localeCompare(b, 'zh-Hant'));
 
     const sortedByAqi = [...validRecords].sort((a, b) => a.aqiValue - b.aqiValue);
     const summaryData = {
@@ -116,8 +115,12 @@ export default function AirQualityPage() {
         
         {/* 篩選區 */}
         <div className="mb-6 flex items-center gap-4 rounded-lg bg-white p-4 shadow">
-          <Search className="h-6 w-6 text-gray-400" />
+          <label htmlFor="county-select" className="flex items-center gap-2 text-gray-600">
+            <Search className="h-6 w-6" />
+            篩選縣市:
+          </label>
           <select
+            id="county-select"
             value={filterCounty}
             onChange={(e) => setFilterCounty(e.target.value)}
             className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -145,7 +148,7 @@ export default function AirQualityPage() {
                   </div>
                 </div>
                 <div className="mt-4 border-t pt-4 text-sm text-gray-600">
-                  PM2.5: <span className="font-semibold">{record.pm2_5}</span> µg/m³
+                  PM2.5: <span className="font-semibold">{record.pm2_5 || 'N/A'}</span> µg/m³
                 </div>
               </div>
             );
@@ -155,3 +158,4 @@ export default function AirQualityPage() {
     </div>
   );
 }
+
