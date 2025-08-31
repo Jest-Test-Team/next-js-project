@@ -1,47 +1,59 @@
+# 工作流程的名稱
 name: Deploy to Cloudflare Pages
 
-# 當有程式碼推送到 main 分支時，或手動觸發時執行
+# 觸發此工作流程的事件
 on:
+  # 當有程式碼推送到 main 分支時觸發
   push:
     branches:
       - main
+  # 允許您在 GitHub Actions 頁面上手動觸發此工作流程
   workflow_dispatch:
 
 jobs:
   publish:
+    # 使用最新的 Ubuntu 虛擬環境來執行工作
     runs-on: ubuntu-latest
     permissions:
       contents: read
       deployments: write # Cloudflare Action 需要此權限來更新部署狀態
 
     steps:
+      # 步驟 1: 取得您的程式碼
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 步驟 2: 設定 Node.js 環境
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: 'npm'
-          cache-dependency-path: 'my-app/package-lock.json' # 指向正確的 lock 檔案
+          node-version: "20" # 使用穩定的 Node.js 版本
+          cache: 'npm'      # 為 npm 設定快取以加速安裝
 
+      # 步驟 3: 安裝專案依賴套件
       - name: Install dependencies
-        working-directory: ./my-app # 指定在 my-app 資料夾內執行
-        run: npm ci
+        run: npm ci # 使用 'ci' 更適合自動化環境，速度更快且更可靠
 
+      # 步驟 4: 建置 Next.js 專案
       - name: Build
-        working-directory: ./my-app # 指定在 my-app 資料夾內執行
         env:
-          # 傳入 API Key 給建置程序
-          NEXT_PUBLIC_MOENV_API_KEY: ${{ secrets.NEXT_PUBLIC_MOENV_API_KEY }}
+          # 將您在 GitHub Secrets 中設定的 API Key 傳入建置程序
+          NEXT_PUBLIC_API_KEY: ${{ secrets.NEXT_PUBLIC_API_KEY }}
         run: npm run build
 
+      # 步驟 5: 發布到 Cloudflare Pages
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
+          # 使用您在 GitHub Secrets 中設定的 Token 和 Account ID
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          # ⬇️ Make sure this value is 100% correct ⬇️
-          projectName: 'next-js-project' 
-          directory: ./my-app
+          
+          # ⚠️ 請務必將 'your-project-name' 替換成您在 Cloudflare 上的真實專案名稱
+          projectName: 'next-js-project'
+          
+          # 建置後的輸出目錄。Next.js 的預設輸出是 '.next'
+          directory: .next
+          
+          # 讓 Cloudflare Action 知道這是 GitHub 的部署
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
