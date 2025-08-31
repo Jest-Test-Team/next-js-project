@@ -54,7 +54,7 @@ jobs:
           projectName: 'next-js-project' 
           
           # ✅ 修正: 指向位於子目錄中的建置輸出資料夾
-          directory: aqi-dashboard/.next
+          directory: aqi-dashboard/out
           
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
