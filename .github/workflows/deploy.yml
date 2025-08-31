@@ -3,20 +3,17 @@ name: Deploy to Cloudflare Pages
 
 # 觸發此工作流程的事件
 on:
-  # 當有程式碼推送到 main 分支時觸發
   push:
     branches:
       - main
-  # 允許您在 GitHub Actions 頁面上手動觸發此工作流程
   workflow_dispatch:
 
 jobs:
   publish:
-    # 使用最新的 Ubuntu 虛擬環境來執行工作
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      deployments: write # Cloudflare Action 需要此權限來更新部署狀態
+      deployments: write
 
     steps:
       # 步驟 1: 取得您的程式碼
@@ -27,17 +24,22 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20" # 使用穩定的 Node.js 版本
-          cache: 'npm'      # 為 npm 設定快取以加速安裝
+          node-version: "20"
+          cache: 'npm'
+          # ✅ 修正: 明確指定 package-lock.json 檔案的正確路徑
+          cache-dependency-path: aqi-dashboard/package-lock.json
 
       # 步驟 3: 安裝專案依賴套件
       - name: Install dependencies
-        run: npm ci # 使用 'ci' 更適合自動化環境，速度更快且更可靠
+        # ✅ 修正: 進入專案子目錄後再執行安裝指令
+        working-directory: ./aqi-dashboard
+        run: npm ci
 
       # 步驟 4: 建置 Next.js 專案
       - name: Build
+        # ✅ 修正: 進入專案子目錄後再執行建置指令
+        working-directory: ./aqi-dashboard
         env:
-          # 將您在 GitHub Secrets 中設定的 API Key 傳入建置程序
           NEXT_PUBLIC_API_KEY: ${{ secrets.NEXT_PUBLIC_API_KEY }}
         run: npm run build
 
@@ -45,15 +47,14 @@ jobs:
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
-          # 使用您在 GitHub Secrets 中設定的 Token 和 Account ID
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           
           # ⚠️ 請務必將 'your-project-name' 替換成您在 Cloudflare 上的真實專案名稱
-          projectName: 'next-js-project'
+          projectName: 'next-js-project' 
           
-          # 建置後的輸出目錄。Next.js 的預設輸出是 '.next'
-          directory: .next
+          # ✅ 修正: 指向位於子目錄中的建置輸出資料夾
+          directory: aqi-dashboard/.next
           
-          # 讓 Cloudflare Action 知道這是 GitHub 的部署
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
