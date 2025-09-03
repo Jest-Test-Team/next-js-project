@@ -1,6 +1,2 @@
-const nextConfig = {
-  // config options here
-  output: '.out',
-};
-
+const nextConfig = { output: 'export' };
 export default nextConfig;
