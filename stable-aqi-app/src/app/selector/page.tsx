@@ -1,6 +1,6 @@
-// src/app/page.tsx
+import CitySelector from "@/app/components/CitySelector";
 
-import CitySelector from "../app/components/CitySelector"; // <-- 引入客戶端元件
+export const dynamic = 'force-dynamic';
 
 // 定義 TypeScript 型別 (保持不變)
 interface WeatherElement {
@@ -48,7 +48,7 @@ async function getWeatherData(location: string) {
 }
 
 // 主頁面元件，現在可以接收 searchParams
-export default async function HomePage({
+export default async function SelectorPage({
   searchParams,
 }: {
   searchParams: { city?: string };
