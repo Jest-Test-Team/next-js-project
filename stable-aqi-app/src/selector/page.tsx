@@ -1,18 +1,10 @@
-<<<<<<< Updated upstream:stable-aqi-app/src/selector/page.tsx
+
 // src/app/page.tsx
 
 import CitySelector from "../app/components/CitySelector"; // <-- 引入客戶端元件
 
 // 定義 TypeScript 型別 (保持不變)
-=======
-'use client';
 
-import CitySelector from "@/app/components/CitySelector";
-import useSWR from 'swr';
-import { useMemo, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
-
->>>>>>> Stashed changes:stable-aqi-app/src/app/selector/page.tsx
 interface WeatherElement {
   elementName: string;
   time: {

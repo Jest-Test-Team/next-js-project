@@ -53,7 +53,7 @@ export default function SelectorClient() {
   return (
     <>
       <CitySelector />
-      <div className="w-full max-w-md rounded-xl bg白/30 p-8 shadow-lg backdrop-blur-md">
+      <div className="w-full max-w-md rounded-xl bg-white/30 p-8 shadow-lg backdrop-blur-md">
         <h1 className="text-4xl font-bold mb-2">{weatherInfo.locationName}</h1>
         <p className="text-lg mb-6">{new Date().toLocaleDateString('zh-TW', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
 
@@ -74,15 +74,15 @@ export default function SelectorClient() {
 
         {location && !isLoading && !error && (
           <div className="space-y-4">
-            <div className="flex justify-between items-center p-4 bg白/20 rounded-lg">
+            <div className="flex justify-between items-center p-4 bg-white/20 rounded-lg">
               <span className="font-semibold">最高/最低溫度</span>
               <span>{weatherInfo.minT}° / {weatherInfo.maxT}° C</span>
             </div>
-            <div className="flex justify-between items-center p-4 bg白/20 rounded-lg">
+            <div className="flex justify-between items-center p-4 bg-white/20 rounded-lg">
               <span className="font-semibold">降雨機率</span>
               <span>{weatherInfo.pop} %</span>
             </div>
-            <div className="flex justify-between items-center p-4 bg白/20 rounded-lg">
+            <div className="flex justify-between items-center p-4 bg-white/20 rounded-lg">
               <span className="font-semibold">舒適度</span>
               <span>{weatherInfo.ci}</span>
             </div>

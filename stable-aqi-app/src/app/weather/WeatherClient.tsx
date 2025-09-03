@@ -74,15 +74,15 @@ export default function WeatherClient() {
 
         {location && !isLoading && !error && (
           <div className="space-y-4">
-            <div className="flex justify-between items-center p-4 bg白/20 rounded-lg">
+            <div className="flex justify-between items-center p-4 bg-white/20 rounded-lg">
               <span className="font-semibold">最高/最低溫度</span>
               <span>{weatherInfo.minT}° / {weatherInfo.maxT}° C</span>
             </div>
-            <div className="flex justify-between items-center p-4 bg白/20 rounded-lg">
+            <div className="flex justify-between items-center p-4 bg-white/20 rounded-lg">
               <span className="font-semibold">降雨機率</span>
               <span>{weatherInfo.pop} %</span>
             </div>
-            <div className="flex justify-between items-center p-4 bg白/20 rounded-lg">
+            <div className="flex justify-between items-center p-4 bg-white/20 rounded-lg">
               <span className="font-semibold">舒適度</span>
               <span>{weatherInfo.ci}</span>
             </div>
