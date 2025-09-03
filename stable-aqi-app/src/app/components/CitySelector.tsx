@@ -1,8 +1,6 @@
-// src/components/CitySelector.tsx
+'use client';
 
-'use client'; // <-- 這行是關鍵！它告訴 Next.js 這是一個客戶端元件
-
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 
 // 台灣縣市列表
 const CITIES = [
@@ -15,12 +13,14 @@ const CITIES = [
 export default function CitySelector() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const currentCity = searchParams.get('city') || '臺北市'; // 從 URL 讀取當前城市，預設為臺北市
+  const pathname = usePathname();
+  const currentCity = searchParams.get('city') || '臺北市';
 
   const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newCity = event.target.value;
-    // 使用 router.push 來改變 URL，觸發 page.tsx 重新渲染
-    router.push(`/?city=${newCity}`);
+    // 根據當前路徑決定導向的頁面
+    const targetPath = pathname === '/weather' ? '/weather' : '/';
+    router.push(`${targetPath}?city=${newCity}`);
   };
 
   return (
