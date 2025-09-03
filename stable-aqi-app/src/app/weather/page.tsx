@@ -1,5 +1,7 @@
 import CitySelector from "@/app/components/CitySelector";
 
+export const dynamic = 'force-dynamic';
+
 // 定義 TypeScript 型別
 interface WeatherElement {
   elementName: string;
