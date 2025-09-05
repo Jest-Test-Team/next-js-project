@@ -5,7 +5,7 @@ import useSWR from 'swr';
 import { Wind, MapPin, Search, CloudSun, CloudFog } from 'lucide-react';
 
 // --- API 設定 ---
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY|| '79533238-5664-4522-9f5a-b96a87b589b7';
 const API_URL = `https://data.moenv.gov.tw/api/v2/aqx_p_432?api_key=${API_KEY}`;
 
 // --- TypeScript 型別定義 ---

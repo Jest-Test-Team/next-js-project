@@ -28,7 +28,7 @@ export default function SelectorClient() {
   const selectedCity = searchParams.get('city') || '臺北市';
 
   const apiUrl = useMemo(() => {
-    const apiKey = process.env.NEXT_PUBLIC_CWA_API_KEY;
+    const apiKey = '7c09e7e2-36d4-4350-af72-481ac9e941e1';
     const query = new URLSearchParams({
       Authorization: String(apiKey ?? ''),
       locationName: selectedCity,

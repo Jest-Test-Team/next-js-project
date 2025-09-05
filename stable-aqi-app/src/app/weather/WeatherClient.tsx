@@ -28,7 +28,7 @@ export default function WeatherClient() {
   const selectedCity = searchParams.get('city') || '臺北市';
 
   const apiUrl = useMemo(() => {
-    const apiKey = process.env.NEXT_PUBLIC_CWA_API_KEY;
+    const apiKey = process.env.CWA_API_KEY|| 'CWA-31F6DE68-B774-4B5F-BCCC-1FF24656603C';
     const query = new URLSearchParams({
       Authorization: String(apiKey ?? ''),
       locationName: selectedCity,
