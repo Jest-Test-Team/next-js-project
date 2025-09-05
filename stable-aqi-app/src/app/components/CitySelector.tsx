@@ -1,6 +1,4 @@
-// src/components/CitySelector.tsx
-
-'use client'; // <-- 這行是關鍵！它告訴 Next.js 這是一個客戶端元件
+'use client';
 
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 
