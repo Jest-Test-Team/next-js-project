@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Wind, CloudSun } from 'lucide-react';
+import { Wind, CloudSun, Sunrise } from 'lucide-react';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -19,6 +19,12 @@ export default function Navbar() {
       href: '/weather',
       icon: CloudSun,
       description: '各縣市天氣預報'
+    },
+    {
+      name: '日出日落',
+      href: '/sunrise-sunset',
+      icon: Sunrise,
+      description: '日出日落'
     }
   ];
 
