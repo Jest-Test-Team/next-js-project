@@ -7,7 +7,6 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-
 export const metadata: Metadata = {
   title: "台灣環境資訊平台",
   description: "台灣即時空氣品質指標與天氣預報資訊",
@@ -21,7 +20,6 @@ export default function RootLayout({
   return (
     <html lang="zh-TW">
       <body
-
         className={`${inter.variable} antialiased`}
       >
         <Navbar />

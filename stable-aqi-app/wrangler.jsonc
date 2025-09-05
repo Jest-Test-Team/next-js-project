@@ -2,7 +2,7 @@
   "name": "government-public-api",
   "compatibility_date": "2025-08-31",
   "assets": {
-    "directory": "./out"
-
+    "directory": "./out",
+//"binding": "ASSETS" -> need adjust for cf secrect setting issues
   }
 }
