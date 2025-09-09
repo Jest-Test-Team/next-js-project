@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { notFound } from 'next/navigation';
-import { Earthquake } from 'lucide-react';
+import { Rss } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
